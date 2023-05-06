@@ -30,6 +30,7 @@ class UserFixtures extends Fixture
             $user->setEmail(sprintf('user+%d@gmail.com', $nbUsers));
             $user->setPicture($picture);
             $user->setCreationDate($faker->dateTime);
+            $user->setClient($this->getReference('client_' . $faker->numberBetween(1, 5)));
             $manager->persist($user);
 
             $this->addReference('user_'. $nbUsers, $user);
