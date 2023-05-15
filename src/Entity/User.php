@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Elasticsearch\Filter\TermFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Doctrine\CurrentClientExtension;
 use App\Repository\UserRepository;
+use App\State\UserProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
@@ -17,10 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
         new GetCollection(),
         new Post(),
         new Delete(),
-    ]
+    ],
+    normalizationContext: ['groups' => ['read:User']],
+    denormalizationContext: ['groups' => ['write:User']],
+    paginationItemsPerPage: 5,
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[Post(processor: UserProcessor::class)]
 class User
 {
     #[ORM\Id]
@@ -29,23 +38,33 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $picture = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['read:User'])]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'user')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
+
+    public function __construct()
+    {
+        $this->creationDate = new \DateTime();
+    }
 
     public function getId(): ?int
     {
