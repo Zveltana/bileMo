@@ -13,8 +13,7 @@ final class UserProcessor implements ProcessorInterface
         private readonly ProcessorInterface $persistProcessor,
         private readonly ProcessorInterface $removeProcessor,
         private readonly Security $security,
-    )
-    {
+    ) {
     }
 
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
