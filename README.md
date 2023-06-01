@@ -16,6 +16,10 @@ The main objective is to be able to :
 - add a new user linked to a customer;
 - delete a user added by a customer.
 
+Codacy's note :
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/60815717b59d46b884fa15524dcee800)](https://app.codacy.com/gh/Zveltana/bileMo/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 ## Require
 
 This project requires PHP 8.1, MySQL or MariaDB, Composer 2.5, Symfony 6.2, JWT Authentication, Faker, ApiPlatform 3.1 and Doctrine.
