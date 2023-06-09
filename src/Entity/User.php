@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use App\State\UserProcessor;
 use Doctrine\DBAL\Types\Types;
@@ -24,6 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[Put(denormalizationContext: ['groups' => ['write']])]
 #[Post(denormalizationContext: ['groups' => ['write']], processor: UserProcessor::class)]
 class User
 {
